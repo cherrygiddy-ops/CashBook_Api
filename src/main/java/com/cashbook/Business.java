@@ -24,5 +24,5 @@ public class Business extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private Cashbook_User owner;
 }

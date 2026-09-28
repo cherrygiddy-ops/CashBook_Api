@@ -38,5 +38,5 @@ public class Transaction extends BaseEntity {
     private Contact contact;
 
     @ManyToOne
-    private User createdBy;
+    private Cashbook_User createdBy;
 }

@@ -14,11 +14,14 @@ public class BusinessMember extends BaseEntity {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "business_id")
     private Business business;
 
     @ManyToOne
-    private User user;
+    @JoinColumn(name = "user_id")
+    private Cashbook_User cashbookuser;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column(name = "member_role")
+    private Member_Role memberRole;
 }

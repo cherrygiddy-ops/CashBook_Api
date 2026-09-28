@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
+@Table(name = "cashbook_user")
 @Getter
 @Setter
-public class User extends BaseEntity {
+public class Cashbook_User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

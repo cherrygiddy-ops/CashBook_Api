@@ -10,19 +10,24 @@ import java.time.LocalDateTime;
 @Table(name = "audit_logs")
 @Getter
 @Setter
-public class AuditLog {
+public class AuditLog extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Cashbook_User user;
 
+    @Column(nullable = false)
     private String action;
 
+    @Column(name = "entity_name")
     private String entityName;
 
+    @Column(name = "entity_id")
     private Long entityId;
 
-    private LocalDateTime createdAt;
+    private String details;
 }
