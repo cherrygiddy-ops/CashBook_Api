@@ -1,5 +1,6 @@
 package com.cashbook;
 
+import com.cashbook.auth.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +25,5 @@ public class Business extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private Cashbook_User owner;
+    private User owner;
 }

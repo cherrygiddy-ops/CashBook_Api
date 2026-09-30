@@ -1,4 +1,6 @@
 package com.cashbook;
+import com.cashbook.auth.users.Role;
+import com.cashbook.auth.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,9 +21,9 @@ public class BusinessMember extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Cashbook_User cashbookuser;
+    private User cashbookuser;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_role")
-    private Member_Role memberRole;
+    private Role memberRole;
 }

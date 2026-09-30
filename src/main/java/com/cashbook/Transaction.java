@@ -1,7 +1,10 @@
 package com.cashbook;
+import com.cashbook.auth.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "transactions")
@@ -19,9 +22,9 @@ public class Transaction extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
-    private Double amount;
+    private BigDecimal amount;
 
-    private Double runningBalance;
+    private BigDecimal runningBalance;
 
     private String remarks;
 
@@ -38,5 +41,5 @@ public class Transaction extends BaseEntity {
     private Contact contact;
 
     @ManyToOne
-    private Cashbook_User createdBy;
+    private User createdBy;
 }

@@ -1,10 +1,9 @@
 package com.cashbook;
 
+import com.cashbook.auth.users.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "audit_logs")
@@ -18,7 +17,7 @@ public class AuditLog extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Cashbook_User user;
+    private User user;
 
     @Column(nullable = false)
     private String action;

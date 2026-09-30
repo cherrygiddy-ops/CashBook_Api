@@ -1,6 +1,6 @@
-package com.cashbook;
+package com.cashbook.auth.users;
 
-public enum Member_Role {
+public enum Role {
     OWNER,
     ADMIN,
     ACCOUNTANT,
