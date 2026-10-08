@@ -46,9 +46,9 @@ public class AuthService {
 
 
     public Jwt getJwt(LoginRequestDto requestDto, HttpServletResponse response) throws AccountNotVerifiedException {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getPhoneNumber(), requestDto.getPassword()));
 
-        var user =repository.findByEmail(requestDto.getEmail()).orElseThrow(UserNotFoundException::new);
+        var user =repository.findByPhoneNumber(requestDto.getPhoneNumber()).orElseThrow(UserNotFoundException::new);
 
         if (!user.isVerified()) {
             throw new AccountNotVerifiedException();

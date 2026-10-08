@@ -18,11 +18,11 @@ public class UserService {
 
 
     public UserResponseDto registerUser(RegistrationDto requestDto)  {
-        if (repository.existsByEmail(requestDto.getEmail()))
+        if (repository.existsByPhoneNumber(requestDto.getPhoneNumber()))
             throw new UserExistsException();
         var user = userMapper.toEntity(requestDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.USER);
         String token = UUID.randomUUID().toString();
         user.setVerificationToken(token);
         user.setVerificationtokenExpiry(LocalDateTime.now().plusHours(24));

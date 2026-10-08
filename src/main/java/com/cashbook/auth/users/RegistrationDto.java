@@ -8,7 +8,7 @@ public class RegistrationDto {
     @NotNull
     private String username;
     @NotNull
-    private String email;
+    private String phoneNumber;
     @NotNull
     private String password;
 

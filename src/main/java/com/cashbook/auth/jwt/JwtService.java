@@ -25,7 +25,7 @@ public class JwtService {
     private Jwt generateToken(User entity, int expirationSeconds) {
         String token = Jwts.builder()
                 .subject(entity.getId().toString())
-                .claim("name", entity.getFirstname())
+                .claim("name", entity.getFirst_name())
                 .claim("email", entity.getEmail())
                 .claim("role", entity.getRole())
                 .claim("phoneNumber",entity.getPhoneNumber())

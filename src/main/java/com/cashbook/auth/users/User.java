@@ -11,18 +11,18 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "cashbook_user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @Column(nullable = false, unique = true)
+    @Column(name = "username", unique = true)
     private String username;
 
-    @Column(nullable = false, unique = true)
-    private String firstname;
+    @Column(name = "first_name", nullable = true)
+    private String first_name;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
 
     @Column(unique = true)
@@ -32,15 +32,14 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role ;
+    private Role role;
 
-    @Column(nullable = false)
-    private boolean verified = true; // account active/inactive
+    @Column
+    private boolean verified = true;
 
-    @Column(nullable = false)
-    private boolean locked = false; // for failed login attempts
+    @Column
+    private boolean locked = false;
 
-    // Audit fields
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -50,8 +49,6 @@ public class User {
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
-    // Optional fields
-
     @Column(name = "profile_picture_url")
     private String profilePictureUrl;
 
@@ -60,7 +57,6 @@ public class User {
 
     @Column(name = "reset_token_expiry")
     private LocalDateTime resetTokenExpiry;
-
 
     @Column(name = "verification_token")
     private String verificationToken;

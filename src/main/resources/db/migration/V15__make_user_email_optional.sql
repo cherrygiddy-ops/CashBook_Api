@@ -1,0 +1,2 @@
+ALTER TABLE cashbook_user
+    ALTER COLUMN email DROP NOT NULL;

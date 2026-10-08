@@ -6,5 +6,5 @@ import lombok.Data;
 public class UserResponseDto {
     private Integer id;
     private String username;
-    private String email;
+    private String phoneNumber;
 }

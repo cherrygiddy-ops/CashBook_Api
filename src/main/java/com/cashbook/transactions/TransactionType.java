@@ -1,4 +1,4 @@
-package com.cashbook;
+package com.cashbook.transactions;
 
 
 public enum TransactionType {
