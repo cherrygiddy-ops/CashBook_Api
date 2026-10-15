@@ -2,6 +2,7 @@ package com.cashbook.auth.users;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -28,6 +29,19 @@ public class UserController {
     @GetMapping("/active/count")
     public Map<String, Long> getActiveUsers() {
         return Map.of("activeUsers", service.getActiveUsers());
+    }
+
+    @ExceptionHandler(UserExistsException.class)
+    public ResponseEntity<?> handleUserExists(
+            UserExistsException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("message", ex.getMessage()));
+    }
+    @ExceptionHandler(PhoneNumberExistsException.class)
+    public ResponseEntity<?> handleCredentialsDontMatch (){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Phone number already registered.");
     }
 }
 

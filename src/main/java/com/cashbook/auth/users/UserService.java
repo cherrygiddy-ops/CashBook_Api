@@ -18,8 +18,15 @@ public class UserService {
 
 
     public UserResponseDto registerUser(RegistrationDto requestDto)  {
-        if (repository.existsByPhoneNumber(requestDto.getPhoneNumber()))
-            throw new UserExistsException();
+        if (repository.existsByUsername(requestDto.getUsername())) {
+            throw new UserExistsException(
+                    "Username already exists."
+            );
+        }
+
+        if (repository.existsByPhoneNumber(requestDto.getPhoneNumber())) {
+            throw new PhoneNumberExistsException();
+        }
         var user = userMapper.toEntity(requestDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.USER);
