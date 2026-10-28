@@ -8,6 +8,6 @@ public interface TransactionMapper {
     @Mapping(source = "cashbook.id", target = "cashbookId")
     @Mapping(source = "category.id", target = "categoryId")
     @Mapping(source = "contact.id", target = "contactId")
-    @Mapping(source = "createdBy.first_name", target = "createdBy")
+    @Mapping(source = "createdBy.username", target = "createdBy")
     TransactionResponseDto toResponse(Transaction transaction);
 }

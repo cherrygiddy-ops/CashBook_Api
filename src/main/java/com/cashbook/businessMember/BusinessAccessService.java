@@ -1,3 +1,4 @@
+
 package com.cashbook.businessMember;
 
 import com.cashbook.auth.AuthService;
@@ -7,10 +8,12 @@ import com.cashbook.business.BusinessRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BusinessAccessService {
 
     private final AuthService authService;
@@ -28,26 +31,19 @@ public class BusinessAccessService {
      * Verify that the current user owns or belongs to the business.
      */
     public void verifyAccess(Long businessId) {
-        Business business = getBusiness(businessId);
-        User currentUser = getCurrentUser();
-
-        if (isOwner(business, currentUser)) {
-            return;
-        }
-
-        getMembership(businessId, currentUser.getId());
+        getRole(businessId);
     }
 
     /**
      * Verify that the current user can view business data.
-     * OWNER, ACCOUNTANT, and VIEWER can view.
+     * OWNER, ACCOUNTANT, MEMBER and VIEWER can view.
      */
     public void verifyCanView(Long businessId) {
         getRole(businessId);
     }
 
     /**
-     * Verify that the current user can create transactions.
+     * Verify permission to create transactions.
      * OWNER and ACCOUNTANT can create.
      */
     public void verifyCanCreateTransaction(Long businessId) {
@@ -58,11 +54,13 @@ public class BusinessAccessService {
             return;
         }
 
-        throw forbidden("Your role does not permit creating transactions");
+        throw forbidden(
+                "Your role does not permit creating transactions"
+        );
     }
 
     /**
-     * Verify that the current user can update transactions.
+     * Verify permission to update transactions.
      * OWNER and ACCOUNTANT can update.
      */
     public void verifyCanUpdateTransaction(Long businessId) {
@@ -73,11 +71,13 @@ public class BusinessAccessService {
             return;
         }
 
-        throw forbidden("Your role does not permit updating transactions");
+        throw forbidden(
+                "Your role does not permit updating transactions"
+        );
     }
 
     /**
-     * Verify that the current user can delete transactions.
+     * Verify permission to delete transactions.
      * Only OWNER can delete.
      */
     public void verifyCanDeleteTransaction(Long businessId) {
@@ -85,11 +85,13 @@ public class BusinessAccessService {
             return;
         }
 
-        throw forbidden("Only the business owner can delete transactions");
+        throw forbidden(
+                "Only the business owner can delete transactions"
+        );
     }
 
     /**
-     * Verify that the current user can manage business members.
+     * Verify permission to manage business members.
      * Only OWNER can manage members.
      */
     public void verifyCanManageMembers(Long businessId) {
@@ -97,14 +99,16 @@ public class BusinessAccessService {
             return;
         }
 
-        throw forbidden("Only the business owner can manage members");
+        throw forbidden(
+                "Only the business owner can manage members"
+        );
     }
 
     /**
      * Get the current user's role within a business.
-     * The business owner automatically has OWNER permissions.
+     * The business owner automatically receives OWNER permissions.
      */
-    private Member_Role getRole(Long businessId) {
+    public Member_Role getRole(Long businessId) {
         Business business = getBusiness(businessId);
         User currentUser = getCurrentUser();
 
@@ -112,8 +116,10 @@ public class BusinessAccessService {
             return Member_Role.OWNER;
         }
 
-        BusinessMember member =
-                getMembership(businessId, currentUser.getId());
+        BusinessMember member = getMembership(
+                businessId,
+                currentUser.getId()
+        );
 
         if (member.getMemberRole() == null) {
             throw forbidden(
@@ -128,6 +134,13 @@ public class BusinessAccessService {
      * Find a business or return HTTP 404.
      */
     private Business getBusiness(Long businessId) {
+        if (businessId == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Business ID is required"
+            );
+        }
+
         return businessRepository.findById(businessId)
                 .orElseThrow(() ->
                         new ResponseStatusException(
@@ -138,10 +151,12 @@ public class BusinessAccessService {
     }
 
     /**
-     * Check whether the user owns this business.
+     * Check whether the user owns the business.
      */
     private boolean isOwner(Business business, User user) {
         return business.getOwner() != null
+                && user != null
+                && user.getId() != null
                 && business.getOwner().getId().equals(user.getId());
     }
 
@@ -153,7 +168,10 @@ public class BusinessAccessService {
             Long userId
     ) {
         return businessMemberRepository
-                .findByBusinessIdAndCashbookuserId(businessId, userId)
+                .findByBusinessIdAndCashbookuserId(
+                        businessId,
+                        userId
+                )
                 .orElseThrow(() ->
                         forbidden(
                                 "You do not have access to this business"
@@ -171,4 +189,3 @@ public class BusinessAccessService {
         );
     }
 }
-

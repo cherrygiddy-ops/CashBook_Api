@@ -32,4 +32,9 @@ public class Cashbook extends BaseEntity {
 
     @OneToMany(mappedBy = "cashbook")
     private List<Transaction> transactions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cashbook")
+    private List<com.cashbook.cashbookMember.CashbookMember> members =
+            new ArrayList<>();
+
 }

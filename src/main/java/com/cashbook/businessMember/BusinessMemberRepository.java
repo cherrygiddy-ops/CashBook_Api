@@ -19,4 +19,5 @@ public interface BusinessMemberRepository
     );
 
     List<BusinessMember> findByBusinessId(Long businessId);
+    List<BusinessMember> findByCashbookuserId(Long userId);
 }
